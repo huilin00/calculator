@@ -1,12 +1,12 @@
+let operand1;
+let operand2;
+let operator;
+
+// define basic operations
 let addition = (operand1, operand2) => operand1 + operand2;
 let subtraction = (operand1, operand2) => operand1 - operand2;
 let multiplication = (operand1, operand2) => operand1 * operand2;
 let division = (operand1, operand2) => operand1 / operand2;
-
-let operand1;
-let operand2;
-let operator;
-let compute = 0;
 
 
 operate = (operator, operand1, operand2) => {
@@ -18,7 +18,9 @@ operate = (operator, operand1, operand2) => {
     }
 }
 
+// initialize the display to be 0
 const display = document.querySelector(".display");
+display.textContent = 0;
 const clearButton = document.querySelector("#clearButton");
 clearButton.addEventListener("click", function(){
     display.textContent = "";
@@ -26,36 +28,18 @@ clearButton.addEventListener("click", function(){
 
 const backspaceButton = document.querySelector("#backspaceButton");
 backspaceButton.addEventListener("click", function() {
+    // clear the last digit entered
     display.textContent = display.textContent.slice(0, -1);
 })
 
 const buttons = document.querySelectorAll(".cal");
 buttons.forEach((button) => button.addEventListener("click", function() {
-    if (compute === 1) {
-        display.textContent = "";
-        compute = 0; 
+    // if last 
+    let exp = display.textContent + button.textContent; 
+    if (exp[-1] === "." && button.textContent == ".") {
+        // do nothing
     }
-    else {
-        // only consider the last operator
-        if (button.className === "cal operator") {
-            if (display.textContent.includes('+') || display.textContent.includes('-') || display.textContent.includes('*') || display.textContent.includes('/')) {
-                display.textContent = display.textContent.replace(/[+-/*]/, button.textContent);
-            }
-            else {
-                display.textContent += button.textContent;
-            }
-        } else if (button.id === "decimal") {
-            if (display.textContent.includes('.')) {
-                display.textContent = display.textContent;
-             }
-            else {
-                display.textContent += button.textContent;
-            }
-        }
-        else {
-            display.textContent += button.textContent;
-        }
-    }
+
 }));
 
 // evaluation the expression once "=" button is clicked
