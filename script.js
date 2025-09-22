@@ -39,52 +39,64 @@ clearButton.addEventListener("click", function(){
 const backspaceButton = document.querySelector("#backspaceButton");
 backspaceButton.addEventListener("click", function() {
     // clear the last digit entered
-    display.textContent = display.textContent.slice(0, -1);
+    let out = "";
+    if (hasSecondOperand) {
+        operand2 = operand2.slice(0,-1);
+        out = operand2.length === 0 ? "0" : operand2;
+    }
+    else {
+        operand1 = operand1.slice(0,-1);
+        out = operand1.length === 0 ? "0" : operand1;
+    }
+    display.textContent = out;
 })
 
 
-// initialize exp to keep track of user input
-// initalize displayResult to show user input and calculation result
-let exp = "";
-let displayResult = "";
 const buttons = document.querySelectorAll(".cal");
 buttons.forEach((button) => button.addEventListener("click", function() {
+    const curInput = button.textContent;
     // current clicked or last clicked is a number, simply add to expression
-    if (isNumber(button.textContent)) {
-        updateExpression(button.textContent);
-        displayResult = displayResult + button.textContent;
-        display.textContent = displayResult;
-    }
-    else {
-        switch (button.textContent) {
-            case ".":
-                // only allowed "." if the last enter value is NOT "."
-                if (exp[exp.length-1] != ".") {
-                    updateExpression(button.textContent);
-                    displayResult = displayResult + button.textContent;
-                    display.textContent = displayResult;
-                }
-                break;
-            case "=":
-                // consider if we should evaluate the expression and display the result
-                if (isValid(exp)) {
-                    display.textContent = evaluateExpression(exp);
-                }
-                break;
-            default:
-                // replace if previous input valus is ALSO a operator, else add to exp
-                if (op.includes(exp[exp.length-1])) {
-                    let temp = exp.slice(0,-1) + button.textContent;
-                    exp = temp;
-                }
-                else {
-                    updateExpression(button.textContent);
-                }
-                // update the exp, but don't display the evaluation result yet
-                break;
+    if (isNumber(curInput) || curInput === ".") {
+        // first number
+        if (operator === "") {
+            // do nothing, if there's already a "."
+            if (curInput === "." && operand1.includes(".")) return;
+            operand1 = operand1 + curInput;
+            updateDisplay(operand1);
+        }
+        // we expect second number
+        else {
+            hasSecondOperand = true;
+            if (curInput === "." && operand2.includes(".")) return;
+            operand2 = operand2 + curInput;
+            updateDisplay(operand2);
         }
     }
-    alert(exp);
+    // we are dealing with other operator
+    else if (op.includes(curInput)) {
+        // we have what we need to evaluate
+        if (operator != "" && operand2 != "") {
+            result = operate(operator, Number(operand1), Number(operand2));
+            terminate(result);
+            operand1 = String(result); // update 
+            operand2 = "";
+            updateDisplay(operand1);
+        }
+        operator = curInput;
+        hasSecondOperand = true;
+    } else if (curInput === "=") {
+        if (operand1 != "" && operator != "" && operand2 != "") {
+            result = operate(operator, Number(operand1), Number(operand2));
+            terminate(result);
+            updateDisplay(result);
+            // reset 
+            operand1 = Str(result);
+            operand2 = "";
+            operator = "";
+            hasSecondOperand = false;
+        }
+    }
+
 }));
 
 
@@ -93,35 +105,7 @@ buttons.forEach((button) => button.addEventListener("click", function() {
 // check whether the given input is digit
 const isNumber = (str) => str.trim() != "" && !isNaN(Number(str));
 
-// update the exp and display
-const updateExpression = (userInput) => {
-    exp = exp + userInput;
-}
-
-// check if given string is empty or undefined
-const isEmpty = (str) => str === "" || typeof str === "undefined";
-
-// extract operands and operators given the input
-const processExpression = (exp) => {
-  const match = exp.match(/^(.+?)([-+x÷])(.+)$/);
-  if (match) {
-    const [, operand1, operator, operand2] = match;
-    return [operand1, operator, operand2];
-  }
-  return [];
-}
-
-// check if the given expression has 2 operands and 1 operator
-const isValid = (exp) => (processExpression(exp)).length != 0;
-
-// evalute the given expression
-const evaluateExpression = (exp) => {
-    let arr = processExpression(exp);
-    let numberOne = Number(arr[0]);
-    let numberTwo = Number(arr[2]);
-    let operation = arr[1];
-    return operate(operation, numberOne, numberTwo)
-}
+const terminate = (re) => {if (re == null) return;}
 
 const updateDisplay = (str) => display.textContent = str;
 
