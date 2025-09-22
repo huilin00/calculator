@@ -1,6 +1,8 @@
-let operand1;
-let operand2;
-let operator;
+let operand1 = "";
+let operand2 = "";
+let operator = "";
+let result = null;
+let hasSecondOperand = false;
 let op = ["-", "+", "x", "÷"];
 
 
@@ -11,10 +13,9 @@ let multiplication = (operand1, operand2) => operand1 * operand2;
 let division = (operand1, operand2) => {
     if (operand2 === 0) {
         alert("Division by Zero Error!")
+        return null;
     }
-    else {
-        operand1 / operand2;
-    }
+    return operand1 / operand2;
 }
 
 
@@ -25,6 +26,7 @@ operate = (operator, operand1, operand2) => {
         case "-": return subtraction(operand1, operand2);
         case "x": return multiplication(operand1, operand2);
         case "÷": return division(operand1, operand2);
+        default: return null;
     }
 }
 
@@ -42,25 +44,30 @@ backspaceButton.addEventListener("click", function() {
 
 
 // initialize exp to keep track of user input
+// initalize displayResult to show user input and calculation result
 let exp = "";
+let displayResult = "";
 const buttons = document.querySelectorAll(".cal");
 buttons.forEach((button) => button.addEventListener("click", function() {
     // current clicked or last clicked is a number, simply add to expression
     if (isNumber(button.textContent)) {
-        update(button.textContent);
+        updateExpression(button.textContent);
+        displayResult = displayResult + button.textContent;
+        display.textContent = displayResult;
     }
     else {
         switch (button.textContent) {
             case ".":
                 // only allowed "." if the last enter value is NOT "."
                 if (exp[exp.length-1] != ".") {
-                    update(button.textContent);
+                    updateExpression(button.textContent);
+                    displayResult = displayResult + button.textContent;
+                    display.textContent = displayResult;
                 }
                 break;
             case "=":
                 // consider if we should evaluate the expression and display the result
                 if (isValid(exp)) {
-                    alert("We are ready to evaluate!")
                     display.textContent = evaluateExpression(exp);
                 }
                 break;
@@ -71,8 +78,9 @@ buttons.forEach((button) => button.addEventListener("click", function() {
                     exp = temp;
                 }
                 else {
-                    update(button.textContent);
+                    updateExpression(button.textContent);
                 }
+                // update the exp, but don't display the evaluation result yet
                 break;
         }
     }
@@ -86,7 +94,7 @@ buttons.forEach((button) => button.addEventListener("click", function() {
 const isNumber = (str) => str.trim() != "" && !isNaN(Number(str));
 
 // update the exp and display
-const update = (userInput) => {
+const updateExpression = (userInput) => {
     exp = exp + userInput;
 }
 
@@ -107,7 +115,7 @@ const processExpression = (exp) => {
 const isValid = (exp) => (processExpression(exp)).length != 0;
 
 // evalute the given expression
-function evaluateExpression(exp) {
+const evaluateExpression = (exp) => {
     let arr = processExpression(exp);
     let numberOne = Number(arr[0]);
     let numberTwo = Number(arr[2]);
@@ -115,19 +123,14 @@ function evaluateExpression(exp) {
     return operate(operation, numberOne, numberTwo)
 }
 
-// evaluation the expression once "=" button is clicked
-// const evaluateButton = document.querySelector("#equal");
-// evaluateButton.addEventListener("click", function() {
-//     let operand1 = display.textContent.split(/([+\-*/])/)[0];
-//     let operand2 = display.textContent.split(/([+\-*/])/)[2];
-//     let operator = display.textContent.split(/([+\-*/])/)[1];
-//     if (operator === "/" && operand2 == "0") {
-//         display.textContent = "";
-//         alert("Division by zero error");
-//     }
-//     else {
-//          let result = operate(operator, Number(operand1), Number(operand2));
-//          display.textContent = result;
-//          compute = 1;
-//     }
-// });
+const updateDisplay = (str) => display.textContent = str;
+
+// clear
+const clearAll = () => {
+    operand1 = "";
+    operand2 = "";
+    operator = "";
+    result = null;
+    hasSecondOperand = false;
+    updateDisplay("0");
+}
