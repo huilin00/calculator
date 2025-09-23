@@ -1,21 +1,104 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #B9D9EB;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #4B9CD3;
+    width: 270px;
+    height: 270px;
+    margin-top: 5px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+
 .display {
-    width: 300px;
+    width: 250px;
     height: 50px;
-    border: 2px solid black;
+    border: 3px solid #1034A6;
     display: flex;
     justify-content: end;
     align-items: end;
     margin: 10px;
 }
 
+
+
 .container {
-    margin: 10px;
-    width: 300px;
-    height: 50px;
+    display: flex;
+    width: 250px;
+    flex-wrap: wrap;
+    --gap: 5px;
+    --side: 30%;
+    gap: var(--gap);
+
 }
+
+.firstContainer {
+    flex: 0 0 100%;
+    gap: var(--gap);
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+}
+
+#backspaceButton {
+    /* same width as second column */
+    flex: 0 0 calc(100% - var(--side) - var(--gap));
+}
+
+.firstContainer .divide {
+    flex: 0 0 var(--side);
+}
+
+.secondContainer {
+    flex: 0 0 calc(100% - var(--side) - var(--gap));
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
+    padding-right: 5px;
+}
+
+.secondContainer .cal {
+    flex: 1 1 calc(33.33% - var(--gap));
+    box-sizing: border-box;
+}
+
+.thirdContainer {
+    flex: 0 0 var(--side);
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    gap: var(--gap);
+
+}
+
+.thirdContainer .cal { width: 100%;}
 
 
 /* round all button corners, use different colours for numbers and operators */
-.cal {
-    
+.cal, #clearButton, #backspaceButton {
+    box-shadow: none;
+    border: 2px solid #2D68C4;
+    color: white;
+    background-color: #7CB9E8;
 }
+
+.operator, #equal, #clearButton, #backspaceButton {
+     border: 2px solid #008080;
+     background-color: #81D8D0;
+}
+

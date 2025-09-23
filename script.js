@@ -33,6 +33,11 @@ operate = (operator, operand1, operand2) => {
 const display = document.querySelector(".display");
 const clearButton = document.querySelector("#clearButton");
 clearButton.addEventListener("click", function(){
+    operand1 = "";
+    operand2 = "";
+    operator = "";
+    hasSecondOperand = false;
+    result = null;
     display.textContent = "";
 })
 

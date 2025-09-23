@@ -8,27 +8,40 @@
     <title>Calculator</title>
 </head>
 <body>
-    <div>My Calculator</div>
+    <div class="page">
+    <div class="header">
+    <img src="cat.png" alt="cat">
+    <div>Basic Calculator</div>
+    </div>
+    <div class="calculator">
     <div class="display"></div>
-    <div class="container">
+    <div class="container"> 
+        <div class="firstContainer">
+        <button id="backspaceButton">← Backspace</button>
+        <button class="cal operator divide">÷</button>
+        </div>
+        <div class="secondContainer">
         <button class="cal">9</button>
-        <button class="cal">8</button>
-        <button class="cal">7</button>
-        <button class="cal">6</button>
-        <button class="cal">5</button>
-        <button class="cal">4</button>
-        <button class="cal">3</button>
-        <button class="cal">2</button>
-        <button class="cal">1</button>
-        <button class="cal">0</button>
         <button class="cal", id="decimal">.</button>
+        <button id="clearButton" >AC</button>
+        <button class="cal">6</button>
+        <button class="cal">7</button>
+        <button class="cal">8</button>
+        <button class="cal">3</button>
+        <button class="cal">4</button>
+        <button class="cal">5</button>
+        <button class="cal">0</button>
+        <button class="cal">1</button>
+        <button class="cal">2</button>
+        </div>
+        <div class="thirdContainer">
+        <button class="cal operator">x</button>
         <button class="cal", id="equal">=</button>
         <button class="cal operator">+</button>
         <button class="cal operator">-</button>
-        <button class="cal operator">x</button>
-        <button class="cal operator">÷</button>
-        <button id="clearButton" >CLEAR</button>
-        <button id="backspaceButton">BACK</button>
+        </div>
+    </div>
+    </div>
     </div>
 </body>
 </html>
